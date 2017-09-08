@@ -29,6 +29,7 @@ const devicesToursToMarkers = function (devicesTours, deviceFilter) {
                     lat: parseFloat(deviceTour.fst.lat),
                     lng: parseFloat(deviceTour.fst.lng)
                 },
+                onClick: () => { console.log(deviceTour.macAddr) }
             })
     
             markers.push({
@@ -38,6 +39,7 @@ const devicesToursToMarkers = function (devicesTours, deviceFilter) {
                     lat: parseFloat(deviceTour.lst.lat),
                     lng: parseFloat(deviceTour.lst.lat)
                 },
+                onClick: () => { console.log(deviceTour.macAddr) }
             })
         }
     })
