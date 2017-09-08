@@ -25,7 +25,6 @@ api.post('/parseBusTour', (req, res) => {
     exec(tomateloRoutingMachinePath + ' ' + tmpFilePath, (err, stdout, stderr) => {
         if (err) res.status(500).send(stderr)
         else {
-            console.log(stdout)
             res.send(stdout)
         }
     })

@@ -10,7 +10,6 @@ class MapkerService {
         return axios
             .post(this.apiUrl + '/parseBusTour', { busTourRawData: data } )
             .then(res => {
-                console.log(res)
                 return res
             })
     }
