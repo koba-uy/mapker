@@ -15,29 +15,31 @@ const busTourToPolylines = function (busTour) {
         }))
 }
 
-const devicesToursToMarkers = function (devicesTours) {
+const devicesToursToMarkers = function (devicesTours, deviceFilter) {
     let markers = []
     
     devicesTours.forEach(deviceTour => {
-        let color = randomColor().replace('#', '')
-
-        markers.push({
-            key: deviceTour.macAddr + '-a',
-            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|' + color,
-            position: {
-                lat: parseFloat(deviceTour.fst.lat),
-                lng: parseFloat(deviceTour.fst.lng)
-            },
-        })
-
-        markers.push({
-            key: deviceTour.macAddr + '-b',
-            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|' + color,
-            position: {
-                lat: parseFloat(deviceTour.lst.lat),
-                lng: parseFloat(deviceTour.lst.lat)
-            },
-        })
+        if (!deviceFilter || deviceTour.macAddr.indexOf(deviceFilter) >= 0) {
+            let color = randomColor().replace('#', '')
+    
+            markers.push({
+                key: deviceTour.macAddr + '-a',
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|' + color,
+                position: {
+                    lat: parseFloat(deviceTour.fst.lat),
+                    lng: parseFloat(deviceTour.fst.lng)
+                },
+            })
+    
+            markers.push({
+                key: deviceTour.macAddr + '-b',
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|' + color,
+                position: {
+                    lat: parseFloat(deviceTour.lst.lat),
+                    lng: parseFloat(deviceTour.lst.lat)
+                },
+            })
+        }
     })
 
     return markers
@@ -62,7 +64,7 @@ const MapComponent = withGoogleMap(props => {
                     ))
                 }
                 {
-                    devicesToursToMarkers(props.devicesTours).map(marker => (
+                    devicesToursToMarkers(props.devicesTours, props.deviceFilter).map(marker => (
                         <Marker
                             {...marker}
                         />
@@ -81,6 +83,7 @@ class MapkerMap extends Component {
                 mapElement={<div style={{ height: `100%` }} />}
                 busTour={this.props.busTour}
                 devicesTours={this.props.devicesTours}
+                deviceFilter={this.props.deviceFilter}
             />
         )
     }

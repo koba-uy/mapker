@@ -15,6 +15,7 @@ class Mapker extends Component {
         this.state = {
             // inputs
             busTourMapkerInputValue: '',
+            searchInputValue: '',
             // tours
             busTour: [],
             devicesTours: []
@@ -33,6 +34,15 @@ class Mapker extends Component {
                     </Col>
                 </Row>
                 <Row>
+                    <Col xs={12}>
+                        <input 
+                            type='text' 
+                            placeholder='Search' 
+                            onChange={ this.handleSearchInputChange.bind(this) }
+                        />
+                    </Col>
+                </Row>
+                <Row>
                     <Col xs={12} md={3}>
                         <MapkerInput
                             onChange={ this.handleBusTourMapkerInputChange.bind(this) }
@@ -45,11 +55,16 @@ class Mapker extends Component {
                         <MapkerMap 
                             busTour={this.state.busTour}
                             devicesTours={this.state.devicesTours}
+                            deviceFilter={this.state.searchInputValue}
                         />
                     </Col>
                 </Row>
             </Grid>
         )
+    }
+
+    handleSearchInputChange(event) {
+        this.setState({ searchInputValue: event.target.value })
     }
 
     handleBusTourMapkerInputChange(value) {
