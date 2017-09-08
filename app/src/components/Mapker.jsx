@@ -7,6 +7,8 @@ import { withGoogleMap, GoogleMap, Marker, Polyline } from 'react-google-maps'
 
 import MapkerInput from './MapkerInput.jsx'
 
+import MapkerService from '../services/MapkerService.js'
+
 const Map = withGoogleMap(props => (
     <GoogleMap
         defaultCenter={{lat: -34.901112, lng: -56.164532}}
@@ -78,6 +80,15 @@ class Mapker extends Component {
     }
 
     handleBusMapkerInputChange(value) {
+        MapkerService
+            .parseBusTour(value)
+            .then(res => {
+                this.props.onChange(res.data.busTour)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            /*
         this.setState({
             busPathLines: value.map(i => 
                 polyline.decode(i).map(coord => {
@@ -87,10 +98,11 @@ class Mapker extends Component {
                     }
                 })
             )
-        })
+        })*/
     }
 
     handlePeopleMapkerInputChange(value) {
+        return;
         let markers = []
         
         value.map(i => {
