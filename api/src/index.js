@@ -17,6 +17,8 @@ api.get('/', (req, res) => {
 })
 
 api.post('/parseBusTour', (req, res) => {
+    if (!req.body.busTourRawData) throw Error('busTourRawData is required')
+
     let tmpFilePath = path.join(os.tmpdir(), 'temp')
     let tomateloRoutingMachinePath = path.join(__dirname, 'internal/tomatelo-routing-machine/build/tomatelo-routing-machine')
 
