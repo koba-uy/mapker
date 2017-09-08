@@ -42,6 +42,7 @@ class Mapker extends Component {
         super(props)
 
         this.state = {
+            busMapkerInputValue: '',
             busPathLines: [],
             peopleMarkers: []
         }
@@ -81,6 +82,8 @@ class Mapker extends Component {
     }
 
     handleBusMapkerInputChange(value) {
+        this.setState({ busMapkerInputValue: value })
+
         MapkerService
             .parseBusTour(value)
             .then(res => {
@@ -101,42 +104,38 @@ class Mapker extends Component {
     }
 
     handlePeopleMapkerInputChange(value) {
-        return;
-        let markers = []
-        
-        value.map(i => {
-            let aux = i.split(' ')
-            
-            if (aux[1] && aux[1] != aux[2]) {
-                let fst = aux[1].split(',')
-                let snd = aux[2].split(',')
-                let color = randomColor().replace('#', '')
+        MapkerService
+            .parseDevicesTours(this.state.busMapkerInputValue, value)
+            .then(res => {
+                let markers = []
+                
+                res.data.forEach(deviceTour => {
+                    let color = randomColor().replace('#', '')
 
-                markers.push({
-                    key: aux[0] + '-a',
-                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|' + color,
-                    position: {
-                        lat: parseFloat(fst[0]),
-                        lng: parseFloat(fst[1])
-                    },
-                    onClick: () => { console.log(aux[0], new Date(parseInt(aux[3]) * 1000), new Date(parseInt(aux[4]) * 1000)) }
+                    markers.push({
+                        key: deviceTour.macAddr + '-a',
+                        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|' + color,
+                        position: {
+                            lat: parseFloat(deviceTour.fst.lat),
+                            lng: parseFloat(deviceTour.fst.lng)
+                        },
+                    })
+
+                    markers.push({
+                        key: deviceTour.macAddr + '-b',
+                        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|' + color,
+                        position: {
+                            lat: parseFloat(deviceTour.lst.lat),
+                            lng: parseFloat(deviceTour.lst.lat)
+                        },
+                    })
                 })
 
-                markers.push({
-                    key: aux[0] + '-b',
-                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|' + color,
-                    position: {
-                        lat: parseFloat(snd[0]),
-                        lng: parseFloat(snd[1])
-                    },
-                    onClick: () => { console.log(aux[0], new Date(parseInt(aux[3]) * 1000), new Date(parseInt(aux[4]) * 1000)) }
-                })
-            }
-        })
-        
-        this.setState({ 
-            peopleMarkers: markers
-        })
+                this.setState({ peopleMarkers: markers })
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
 }

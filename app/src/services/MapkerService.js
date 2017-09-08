@@ -14,6 +14,11 @@ class MapkerService {
             })
     }
 
+    parseDevicesTours(busTourRawData, devicesToursRawData) {
+        return axios
+            .post(this.apiUrl + '/parseDevicesTours', { busTourRawData: busTourRawData, devicesToursRawData: devicesToursRawData } )
+    }
+
 }
 
 let singleton = new MapkerService()
