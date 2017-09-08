@@ -14,8 +14,9 @@ const Map = withGoogleMap(props => (
         defaultCenter={{lat: -34.901112, lng: -56.164532}}
         defaultZoom={14}>
             {
-                props.busPathLines.map(path => (
+                props.busPathLines.map((path, i) => (
                     <Polyline
+                        key={i}
                         path={path}
                         options={{
                             geodesic: true,
@@ -83,22 +84,20 @@ class Mapker extends Component {
         MapkerService
             .parseBusTour(value)
             .then(res => {
-                this.props.onChange(res.data.busTour)
+                this.setState({
+                    busPathLines: res.data.split('\n').map(i => 
+                        polyline.decode(i).map(coord => {
+                            return {
+                                lat: coord[0],
+                                lng: coord[1]
+                            }
+                        })
+                    )
+                })
             })
             .catch(err => {
                 console.log(err)
             })
-            /*
-        this.setState({
-            busPathLines: value.map(i => 
-                polyline.decode(i).map(coord => {
-                    return {
-                        lat: coord[0],
-                        lng: coord[1]
-                    }
-                })
-            )
-        })*/
     }
 
     handlePeopleMapkerInputChange(value) {
