@@ -37,7 +37,7 @@ const devicesToursToMarkers = function (devicesTours, deviceFilter) {
                 icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|' + color,
                 position: {
                     lat: parseFloat(deviceTour.lst.lat),
-                    lng: parseFloat(deviceTour.lst.lat)
+                    lng: parseFloat(deviceTour.lst.lng)
                 },
                 onClick: () => { console.log(deviceTour.macAddr) }
             })
