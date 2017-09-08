@@ -6,12 +6,9 @@ class MapkerService {
         this.apiUrl = 'http://localhost:5000/api'
     }
 
-    parseBusTour(data) {
+    parseBusTour(busTourRawData) {
         return axios
-            .post(this.apiUrl + '/parseBusTour', { busTourRawData: data } )
-            .then(res => {
-                return res
-            })
+            .post(this.apiUrl + '/parseBusTour', { busTourRawData: busTourRawData } )
     }
 
     parseDevicesTours(busTourRawData, devicesToursRawData) {
