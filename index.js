@@ -15,4 +15,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'app/dist/index.html'))
 })
 
-app.listen(process.env.PORT || 5000)
+app.set('port', process.env.PORT || 5000)
+
+app.listen(app.get('port'), () => {
+    console.log('Monkeys\' King is up and running') 
+})
